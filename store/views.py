@@ -85,8 +85,22 @@ def products_page_view(request, page):
 
 def shop_view(request):
     if request.method == "GET":
+        category_key = request.GET.get("category")
+
+        if ordering_key := request.GET.get("ordering"):
+            if request.GET.get("reverse") in ("true", "True"):
+                data = filtering_category(DATABASE, category_key, ordering_key, True)
+
+            else:
+                data = filtering_category(DATABASE, category_key, ordering_key)
+
+        else:
+            data = filtering_category(DATABASE, category_key)
+
         return render(
-            request, "store/shop.html", context={"products": DATABASE.values()}
+            request,
+            "store/shop.html",
+            context={"products": data, "category": category_key},
         )
 
 

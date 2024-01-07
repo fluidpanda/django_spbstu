@@ -6,18 +6,19 @@ from django.contrib.auth import get_user
 
 def filtering_category(
     database: dict,
-    category_key: [int, str] = None,
+    category_key: [None, str] = None,
     ordering_key: [None, str] = None,
     reverse: bool = False,
-) -> list:
-    if category_key is not None:
+):
+    if category_key:
         result = [
-            item for item in database.values() if item["category"] == category_key
+            item for item in database.values() if category_key == item["category"]
         ]
-    else:
-        result = list(database)
 
-    if ordering_key is not None:
+    else:
+        result = list(database.values())
+
+    if ordering_key:
         result.sort(key=lambda x: x[ordering_key], reverse=reverse)
 
     return result
