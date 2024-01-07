@@ -1,6 +1,10 @@
 venv
+<<<<<<< HEAD
 .idea
 __pycache__
 =======
 .idea
 >>>>>>> origin/lab4
+=======
+.idea
+>>>>>>> origin/lab5
