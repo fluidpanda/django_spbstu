@@ -70,7 +70,7 @@ def remove_from_cart(request, id_product: str) -> bool:
     return True
 
 
-def add_user_to_cart(request, username: str):
+def add_user_to_cart(request, username: str) -> None:
     cart_users = view_in_cart(request)
     cart = cart_users.get(username)
 
@@ -78,3 +78,59 @@ def add_user_to_cart(request, username: str):
         with open("cart.json", mode="w", encoding="utf-8") as file:
             cart_users[username] = {"products": {}}
             json.dump(cart_users, file)
+
+
+def view_in_wishlist(request) -> dict:
+    if os.path.exists("wishlist.json"):
+        with open("wishlist.json", encoding="utf-8") as file:
+            return json.load(file)
+
+    user = get_user(request).username
+    wishlist = {user: {"products": []}}
+    with open("wishlist.json", mode="x", encoding="utf-8") as file:
+        json.dump(wishlist, file)
+
+    return wishlist
+
+
+def add_to_wishlist(request, id_product: str) -> bool:
+    wishlist_users = view_in_wishlist(request)
+    wishlist = wishlist_users[get_user(request).username]
+
+    if DATABASE.get(id_product):
+        if id_product not in wishlist["products"]:
+            wishlist["products"].append(id_product)
+
+    else:
+        return False
+
+    with open("wishlist.json", mode="w", encoding="utf-8") as file:
+        json.dump(wishlist_users, file)
+
+    return True
+
+
+def remove_from_wishlist(request, id_product: str) -> bool:
+    wishlist_users = view_in_wishlist(request)
+    wishlist = wishlist_users[get_user(request).username]
+
+    if id_product in wishlist_users["products"]:
+        wishlist["products"].remove(id_product)
+
+    else:
+        return False
+
+    with open("wishlist.json", mode="w", encoding="utf-8") as file:
+        json.dump(wishlist_users, file)
+
+    return True
+
+
+def add_user_to_wishlist(request, username: str) -> None:
+    wishlist_users = view_in_wishlist(request)
+    wishlist = wishlist_users.get(username)
+
+    if not wishlist:
+        with open("wishlist.json", mode="w", encoding="utf-8") as file:
+            wishlist_users[username] = {"products": []}
+            json.dump(wishlist_users, file)

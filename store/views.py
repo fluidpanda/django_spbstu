@@ -109,6 +109,7 @@ def cart_view(request):
     if request.method == "GET":
         current_user = get_user(request).username
         data = view_in_cart(request)[current_user]
+
         if request.GET.get("format") == "JSON":
             return JsonResponse(data, json_dumps_params=JSON_PARAMS)
 
@@ -118,6 +119,7 @@ def cart_view(request):
             product["quantity"] = quantity
             product["price_total"] = f"{quantity * product['price_after']:.2f}"
             products.append(product)
+
         return render(request, "store/cart.html", context={"products": products})
 
 
