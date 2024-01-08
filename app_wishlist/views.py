@@ -1,22 +1,15 @@
-from django.shortcuts import render
-
-
-from django.shortcuts import render, redirect
-
-# from django.views.generic import ListView
-from django.views import View
-from django.contrib.auth import get_user
 from logic.services import (
     view_in_wishlist,
     add_to_wishlist,
     remove_from_wishlist,
     add_user_to_wishlist,
 )
-
-# from logic.services import viewInWish,addToWish,removeFromWish
 from django.http import JsonResponse, HttpResponse, HttpResponseNotFound
 from store.models import DATABASE
-from django.utils.decorators import method_decorator
+from logic.services import filtering_category
+from django.shortcuts import render
+from django.shortcuts import redirect
+from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
 
 
@@ -33,3 +26,15 @@ def wishlist_view(request):
             products.append(product)
 
         return render(request, "wishlist/wishlist.html", context={"products": products})
+
+
+def wishlist_add_json(request, id_product: str):
+    ...
+
+
+def wishlist_del_json(request, id_product: str):
+    ...
+
+
+def wishlist_json(request):
+    ...

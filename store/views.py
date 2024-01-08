@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from logic.services import view_in_cart, add_to_cart, remove_from_cart
 from django.http import JsonResponse, HttpResponse, HttpResponseNotFound
 from .models import DATABASE
